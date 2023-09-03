@@ -13,6 +13,7 @@ const chequeoCredenciales = (req, res, next) => {
 
 const chequeoToken = (req, res, next) => {
     const token = req.header("Authorization").split("Bearer ")[1];
+    console.log(token)
 
 
     if (!token)

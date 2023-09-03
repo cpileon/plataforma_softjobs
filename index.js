@@ -3,7 +3,7 @@ const cors = require("cors");
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const { registrarUsuario, obtenerDatosDeUsuario, verificarCredenciales } = require("./consultas")
+const { registrarUsuario, obtenerDatos, datosUsuario } = require("./consultas")
 const { chequeoCredenciales, chequeoToken } = require("./middlewares")
 const PORT = process.env.PORT || 3000;
 
@@ -26,3 +26,25 @@ app.post('/usuarios', chequeoCredenciales, async (req, res) =>{
     }
 })
 
+app.get("/usuarios", chequeoToken, async (req, res) => {
+    try {
+      const token = req.header("Authorization").split("Bearer ")[1];
+      const { email } = jwt.decode(token);
+      const usuario = await obtenerDatos(email);
+      res.json(usuario);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  });
+
+  app.post("/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      await datosUsuario(email, password);
+      const token = jwt.sign({ email }, process.env.SECRET);
+      res.send(token);
+    } catch (error) {
+     res.status(500).send(error.message);
+    }
+  });
+  
