@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const { registrarUsuario, obtenerDatos, datosUsuario } = require("./consultas")
-const { chequeoCredenciales, chequeoToken } = require("./middlewares")
+const { chequeoCredenciales, chequeoToken, reportarConsultas } = require("./middlewares")
 const PORT = process.env.PORT || 3000;
 
 //middleware
+app.use(reportarConsultas)
 app.use(express.json());
 app.use(cors());
 

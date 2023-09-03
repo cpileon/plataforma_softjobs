@@ -19,7 +19,6 @@ const obtenerDatos = async (email) => {
     const values = [email];
     const consulta = "SELECT * FROM usuarios WHERE email = $1";
   
-    try{
         const {
             rows: [usuario],
             rowCount,
@@ -34,9 +33,7 @@ const obtenerDatos = async (email) => {
         
           delete usuario.password;
           return usuario;
-    } catch (error){
-        console.log(error)
-    }
+    
 
   };
   
@@ -45,7 +42,6 @@ const obtenerDatos = async (email) => {
     const values = [email];
     const consulta = "SELECT * FROM usuarios WHERE email = $1";
   
-    try {
         const {
             rows: [usuario],
             rowCount,
@@ -56,9 +52,6 @@ const obtenerDatos = async (email) => {
         
           if (!passwordEsCorrecta || !rowCount)
             throw { code: 401, message: "Email o contraseña incorrecta" };
-    } catch (error) {
-        console.log(error)
-    }
 
   };
   

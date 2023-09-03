@@ -8,14 +8,14 @@ const chequeoCredenciales = (req, res, next) => {
       .status(401)
       .send({ message: "No se recibieron las credenciales en esta consulta" });
   }
-  next()
+  next();
 };
 
 const chequeoToken = (req, res, next) => {
     const token = req.header("Authorization").split("Bearer ")[1];
     console.log(`
     Fecha obtención token: ${new Date()}
-    Token: ${token}`)
+    Token: ${token}`);
 
     if (!token)
       throw {
@@ -27,9 +27,17 @@ const chequeoToken = (req, res, next) => {
     if (!tokenValido) throw { code: 401, message: "El token es inválido" };
     next();
   };
+
+  const reportarConsultas = (req, res, next) =>{
+    console.log(`
+    Fecha de consulta: ${new Date()}
+    Consulta recibida: ${req.method} ${req.url}`);
+    next();
+  }
   
 
   module.exports = {
     chequeoCredenciales,
     chequeoToken,
-  }
+    reportarConsultas
+  };
