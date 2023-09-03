@@ -19,20 +19,25 @@ const obtenerDatos = async (email) => {
     const values = [email];
     const consulta = "SELECT * FROM usuarios WHERE email = $1";
   
-    const {
-      rows: [usuario],
-      rowCount,
-    } = await pool.query(consulta, values);
-  
-    if (!rowCount) {
-      throw {
-        code: 404,
-        message: "No se encontró ningún usuario con este email",
-      };
+    try{
+        const {
+            rows: [usuario],
+            rowCount,
+          } = await pool.query(consulta, values);
+        
+          if (!rowCount) {
+            throw {
+              code: 404,
+              message: "No se encontró ningún usuario con este email",
+            };
+          }
+        
+          delete usuario.password;
+          return usuario;
+    } catch (error){
+        console.log(error)
     }
-  
-    delete usuario.password;
-    return usuario;
+
   };
   
   
@@ -40,16 +45,21 @@ const obtenerDatos = async (email) => {
     const values = [email];
     const consulta = "SELECT * FROM usuarios WHERE email = $1";
   
-    const {
-      rows: [usuario],
-      rowCount,
-    } = await pool.query(consulta, values);
-  
-    const { password: passwordEncriptada } = usuario;
-    const passwordEsCorrecta = bcrypt.compareSync(password, passwordEncriptada);
-  
-    if (!passwordEsCorrecta || !rowCount)
-      throw { code: 401, message: "Email o contraseña incorrecta" };
+    try {
+        const {
+            rows: [usuario],
+            rowCount,
+          } = await pool.query(consulta, values);
+        
+          const { password: passwordEncriptada } = usuario;
+          const passwordEsCorrecta = bcrypt.compareSync(password, passwordEncriptada);
+        
+          if (!passwordEsCorrecta || !rowCount)
+            throw { code: 401, message: "Email o contraseña incorrecta" };
+    } catch (error) {
+        console.log(error)
+    }
+
   };
   
   module.exports = {

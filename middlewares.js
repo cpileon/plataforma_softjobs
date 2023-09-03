@@ -13,8 +13,9 @@ const chequeoCredenciales = (req, res, next) => {
 
 const chequeoToken = (req, res, next) => {
     const token = req.header("Authorization").split("Bearer ")[1];
-    console.log(token)
-
+    console.log(`
+    Fecha obtención token: ${new Date()}
+    Token: ${token}`)
 
     if (!token)
       throw {
