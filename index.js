@@ -3,12 +3,12 @@ const cors = require("cors");
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const { registrarUsuario, obtenerDatos, datosUsuario } = require("./consultas")
-const { chequeoCredenciales, chequeoToken, reportarConsultas } = require("./middlewares")
+const { registrarUsuario, obtenerDatos, datosUsuario } = require("./consultas");
+const { chequeoCredenciales, chequeoToken, reportarConsultas } = require("./middlewares");
 const PORT = process.env.PORT || 3000;
 
 //middleware
-app.use(reportarConsultas)
+app.use(reportarConsultas);
 app.use(express.json());
 app.use(cors());
 
@@ -20,12 +20,12 @@ app.listen(PORT, () => {
 app.post('/usuarios', chequeoCredenciales, async (req, res) =>{
     try {
         const usuario = req.body;
-        await registrarUsuario(usuario)
-        return res.send('Usuario registrado')
+        await registrarUsuario(usuario);
+        return res.send('Usuario registrado');
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send(error);
     }
-})
+});
 
 app.get("/usuarios", chequeoToken, async (req, res) => {
     try {
